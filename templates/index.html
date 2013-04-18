@@ -1,0 +1,32 @@
+{{ render_page_header }}
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        {{ render_sidebar }}
+        <div class="span10">
+            <div class="news_nav">
+                当前：2013-04-19， 
+                <a href="#">&lt;&lt;前一天</a> | 
+                <a href="#">后 一天&gt;&gt;</a>
+                ，输入日期：<form style="display: inline"><input style="width:100px"/><input type="button" value="转到" /></form>
+            </div>
+            <ul class="news_list">
+                {% for i in range(10) %}
+                <li class="news">
+                    <span class="column up">▲</span>
+                    <span class="column down">▼</span>
+                    <span class="column edit">Edit</span>
+                    <span class="column status public"></span>
+                    <span class="column title"> 这是第一条新闻 </title>
+                </li>
+                {% endfor %}
+            </ul>
+            
+            
+            
+        </div>
+    </div>
+    
+    
+</div>
+{{ render_page_footer }}

@@ -1,0 +1,46 @@
+/* layout */
+.page{
+    width: 960px;
+    margin:30px auto 0;
+    border: solid 1px #ccc;
+    overflow: hidden;
+}
+
+.page .main{
+    float:left;
+    width: 100%;
+}
+
+.page .main .content{
+    margin-left: 320px;
+    min-height: 500px;
+    border-left: solid 1px #ccc;
+}
+
+.page .sidebar{
+    width: 300px;
+    float: left;
+    margin-left: -100%;
+}
+    
+
+.news_nav{
+
+    padding:10px;
+    border-bottom: solid 1px #ccc;
+    margin-bottom: 15px;
+}
+
+.news_list .news{
+    padding:10px;
+    border-bottom: dashed 1px #ddd;
+}
+
+
+
+
+
+
+
+
+
