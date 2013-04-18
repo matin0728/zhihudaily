@@ -1,0 +1,34 @@
+{{ render_page_header }}
+
+<div class="container-fluid news-questions">
+    <div class="row-fluid">
+        {{ render_sidebar }}
+        <div class="span10">
+            <h2><a href="/news/{{news.id}}/edit">{{ news.title }}</a></h2>
+            <div class="input-append">
+              <input class="input-xxlarge" id="item_to_add" placeholder="问题或者答案链接" type="text">
+              <button class="btn" type="button">添加问答</button>
+            </div>
+            
+            <div class="question-list">
+                {% for i in range(5) %}
+                <div class="question">
+                    <h3><a class="remove" href="javascript:;">移除</a>前端开发中如何做到页面安全，防止 xss ，csrf 这样的欺骗及伪造？</h3>
+                    <ul>
+                        <li><a class="remove" href="javascript:;">移除</a>杨帆, 像xss，csrf这样的问题，虽然我觉得应该更多是后端应该考虑的问题....</li>
+                        <li><a class="remove" href="javascript:;">移除</a>匿名用户, 上策。找律师告他说骚扰你</li>
+                    </ul>    
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary save-change" id="btn-save" data-url="{{ url_for_save_change }}">保存修改</button>
+            </div>
+            
+        </div>
+    </div>
+    
+    
+</div>
+{{ render_page_footer }}

@@ -1,16 +1,19 @@
 {{ render_page_header }}
 
-<div class="page">
-    <div class="main">
-        <div class="content">
+<div class="container-fluid">
+    <div class="row-fluid">
+        {{ render_sidebar }}
+        <div class="span10">
+
             
-            
-            
-            
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary save-change" id="btn-save" data-url="{{ url_for_save_change }}">保存修改，但不发布</button>
+              <button type="submit" class="btn btn-success save-change" id="btn-save-and-publish" data-url="{{ url_for_publish }}">保存修改，同时发布</button>
+            </div>
             
         </div>
     </div>
     
-    {{ render_sidebar }}
+    
 </div>
 {{ render_page_footer }}

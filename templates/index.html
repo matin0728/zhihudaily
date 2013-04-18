@@ -1,28 +1,40 @@
 {{ render_page_header }}
 
-<div class="container-fluid">
+<div class="container-fluid" id="news-list-page">
     <div class="row-fluid">
         {{ render_sidebar }}
         <div class="span10">
             <div class="news_nav">
-                当前：2013-04-19， 
-                <a href="#">&lt;&lt;前一天</a> | 
-                <a href="#">后 一天&gt;&gt;</a>
-                ，输入日期：<form style="display: inline"><input style="width:100px"/><input type="button" value="转到" /></form>
+                当前：{{ current_date }}， 
+                <a href="{{ link_for_previous_day }}">&lt;&lt;前一天</a> | 
+                <a href="{{ link_for_next_day }}">后 一天&gt;&gt;</a>
+                ，输入日期：<form style="display: inline"><input style="width:120px" placeholder="eg. 2013-04-20"/><input type="button" value="转到" /></form>
             </div>
-            <ul class="news_list">
-                {% for i in range(10) %}
-                <li class="news">
-                    <span class="column up">▲</span>
-                    <span class="column down">▼</span>
-                    <span class="column edit">Edit</span>
-                    <span class="column status public"></span>
-                    <span class="column title"> 这是第一条新闻 </title>
+            <ol class="news_list">
+                {% for item in news %}
+                {% if item.status == 'public' %}
+                    <li class="news public" data-itemid="{{ item.id }}">
+                {% elif item.status == 'hidden' %}
+                    <li class="news hidden" data-itemid="{{ item.id }}">
+                {% elif item.status == 'updated' %}
+                    <li class="news updated" data-itemid="{{ item.id }}">
+                {% endif %}
+                    <!-- {{ item.id }} -->
+                    <span class="column status"></span>
+                    
+                    <span class="column edit"><a href="/news/{{ item.id }}/edit">Edit</a></span>
+
+                    <span class="column edit"><a href="/news/{{ item.id }}/q_and_a">QAndA</a></span>
+                    
+                    <span class="column title"> 这是第一条新闻 {{ item.title }} </title>
                 </li>
                 {% endfor %}
-            </ul>
+            </ol>
             
-            
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary save-change" id="btn-save" data-url="{{ url_for_save_change }}">保存修改，但不发布</button>
+              <button type="submit" class="btn btn-success save-change" id="btn-save-and-publish" data-url="{{ url_for_publish }}">保存修改，同时发布</button>
+            </div>
             
         </div>
     </div>

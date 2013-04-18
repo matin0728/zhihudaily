@@ -22,7 +22,15 @@
     float: left;
     margin-left: -100%;
 }
-    
+
+/* drag sorter */    
+.drag-sorter-placeholder{
+    border: dashed 2px blue;
+    height: 33px;
+    width: 100%;
+}
+
+/* end for drap sorter */
 
 .news_nav{
 
@@ -35,6 +43,56 @@
     padding:10px;
     border-bottom: dashed 1px #ddd;
 }
+
+.news .column{
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.news .status{
+    border-radius: 10px;
+    width: 20px;
+    height: 20px;
+    font-size: 0;
+}
+
+.news.public .status{
+    background: green;
+}
+
+.news.hidden .status{
+    background: gray;
+}
+
+.news.updated .status{
+    background: yellow;
+}
+
+.news.hidden .title{
+    color: #ccc;
+}
+
+
+/* news edit page */
+.news_edit_page .field textarea,
+.news_edit_page .field input[type="text"]
+{
+    width: 80%;
+}
+
+
+.news-questions .remove{
+    font-size: 13px;
+    display: inline-block;
+    margin-right: 10px;
+    font-weight: normal;
+}
+
+
+
+
+
+
 
 
 

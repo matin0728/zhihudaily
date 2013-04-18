@@ -1,0 +1,48 @@
+{{ render_page_header }}
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        {{ render_sidebar }}
+        <div class="span10 news_edit_page">
+            <form action="" method="post" class="edit_form">
+            {% if is_edit %}
+            <h2>编辑新闻</h2>
+            {% else %}
+            <h2>添加新闻</h2>
+            {% endif %}
+            <input name="news_id" type="hidden" value="{{news.id}}" />
+            <p class="field"><label for="title">标题</label><textarea id="title" name="title" cols="16" rows="2" required="required">{{news.title}}</textarea></p>
+            <p class="field"><label for="summary">摘要</label><textarea id="summary" name="summary" cols="15" rows="3">{{news.summary}}</textarea></p>
+            <p class="field"><label for="content">内容</label><textarea id="content" name="content" cols="15" rows="20" required="required">{{news.content}}</textarea></p>
+            <p class="field"><label for="source_text">来源（文本）</label><input type="text" id="source_text" name="source_text" required="required" value="{{news.source_text}}"></p>
+            <p class="field"><label for="source_url">来源（URL）</label><input type="text" id="source_url" name="source_url" value="{{news.source_url}}"></p>
+            <p class="field"><label for="image">大图</label><input type="text" id="image" name="image" placeholder="宽 640，高 400+" value="{{news.image}}"></p>
+            <p class="field"><label for="thumbnail">缩略图</label><input type="text" id="thumbnail" name="thumbnail" placeholder="110 * 110" value="{{news.thumbnail}}"></p>
+            <p class="field"><label for="publish_date">发布日期</label><input type="text" id="publish_date" name="publish_date" placeholder="格式为 yyyymmdd，留空为今天发布" value="news.publish_date"></p>
+            
+            {% if news.status != 'hidden' %}
+            <p class="field"><label class="checkbox">是否可见<input type="checkbox" id="visibility" name="visibility" value="visible" checked='checked' /></label></p>
+            {% else %}
+            <p class="field"><label class="checkbox">是否可见<input type="checkbox" id="visibility" name="visibility" value="visible" /></label></p>
+            
+            {% endif %}
+            
+            <div class="form-actions">
+              {% if is_edit %}
+              <button type="submit" class="btn btn-primary save-change">保存修改</button>
+              {% else %}
+              <button type="submit" class="btn btn-primary save-change" id="btn-save" data-url="{{ url_for_save_change }}">创建新闻</button>
+              
+              {% endif %}
+            </div>
+            
+            </form>
+            
+
+            
+        </div>
+    </div>
+    
+    
+</div>
+{{ render_page_footer }}
