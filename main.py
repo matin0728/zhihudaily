@@ -16,15 +16,16 @@
 #
 import webapp2
 import base_handler
+import json
 
 class MainHandler(base_handler.BaseHandler):
     def get(self):
       news = [
-        { 'id': 123, 'status': 'public', 'title': 'Some title'},
-        { 'id': 456, 'status': 'public', 'title': 'Some title'},
-        { 'id': 789, 'status': 'hidden', 'title': 'Hidden news'},
-        { 'id': 112233, 'status': 'updated', 'title': 'Updated news'},
-        { 'id': 334455, 'status': 'public', 'title': 'Some title'}
+        { 'id': 123, 'status': 'public', 'title': 'Some title', 'is_topstory': True},
+        { 'id': 456, 'status': 'public', 'title': 'Some title', 'is_topstory': False},
+        { 'id': 789, 'status': 'hidden', 'title': 'Hidden news', 'is_topstory': False},
+        { 'id': 112233, 'status': 'updated', 'title': 'Updated news', 'is_topstory': False},
+        { 'id': 334455, 'status': 'public', 'title': 'Some title', 'is_topstory': False}
       ]
       context = { 
         'current_date':'2013-04-19',
@@ -53,9 +54,56 @@ class NewsCreateHandler(base_handler.BaseHandler):
       self.render('news_edit.html', context)
             
 class NewsQuestionAndAnswerHandler(base_handler.BaseHandler):
-    def get(self, news_id):    
+    def get(self, news_id):
+      question_list_json = [
+        {
+          'question_id': 123, 
+          'question_title':'aaaaaaaaa',
+          'answers':[
+            {
+              'answer_id': 'a1',
+              'author': 'Jhon',
+              'summary': 'ddsfsdfsdf'
+            },
+            {
+              'answer_id': 'b1',
+              'author': 'Tomy',
+              'summary': 'frgdfdfdffd'
+            },
+            {
+              'answer_id': 'c1',
+              'author': 'LadyGaga',
+              'summary': 'frgdfdfdffd'
+            }
+          
+          ]},
+          {
+            'question_id': 234, 
+            'question_title':'It is too late to say apologize.',
+            'answers':[
+              {
+                'answer_id': 'a1',
+                'author': 'Jhon',
+                'summary': 'ddsfsdfsdf'
+              },
+              {
+                'answer_id': 'b1',
+                'author': 'Tomy',
+                'summary': 'frgdfdfdffd'
+              },
+              {
+                'answer_id': 'c1',
+                'author': 'LadyGaga',
+                'summary': 'frgdfdfdffd'
+              }
+
+            ]}
+      
+      ]    
       context = {
-        'news': {'id': 123, 'title':'[Title for news]'}
+        'news': {'id': 123, 'title':'[Title for news]'},
+        'get_item_json_url': '', # Path for retrive question and answer json object.
+        'question_list_json': json.dumps(question_list_json)
       }
       self.render('news_q_and_a.html', context)
 

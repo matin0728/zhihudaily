@@ -12,13 +12,23 @@
             </div>
             <ol class="news_list">
                 {% for item in news %}
-                {% if item.status == 'public' %}
-                    <li class="news public" data-itemid="{{ item.id }}">
-                {% elif item.status == 'hidden' %}
-                    <li class="news hidden" data-itemid="{{ item.id }}">
-                {% elif item.status == 'updated' %}
-                    <li class="news updated" data-itemid="{{ item.id }}">
+                
+                {% if item.is_topstory %}
+                {% set item_class = 'top-story' %}
+                {% else %}
+                {% set item_class = 'news' %}
                 {% endif %}
+                
+                {% if item.status == 'public' %}
+                {% set item_class = item_class + ' public' %}
+                {% elif item.status == 'hidden' %}
+                {% set item_class = item_class + ' hidden' %}
+                {% elif item.status == 'updated' %}
+                {% set item_class = item_class + ' updated' %}
+                {% endif %}
+                
+                <li class="{{ item_class }}" data-itemid="{{ item.id }}">
+
                     <!-- {{ item.id }} -->
                     <span class="column status"></span>
                     

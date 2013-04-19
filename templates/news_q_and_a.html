@@ -1,17 +1,17 @@
 {{ render_page_header }}
 
-<div class="container-fluid news-questions">
+<div class="container-fluid news-questions" id="news-question-page">
     <div class="row-fluid">
         {{ render_sidebar }}
         <div class="span10">
             <h2><a href="/news/{{news.id}}/edit">{{ news.title }}</a></h2>
             <div class="input-append">
-              <input class="input-xxlarge" id="item_to_add" placeholder="问题或者答案链接" type="text">
-              <button class="btn" type="button">添加问答</button>
+              <input class="input-xxlarge" id="item-to-add" placeholder="问题或者答案链接" type="text">
+              <button class="btn" type="button" id="btn-add-item" data-url="{{get_item_json_url}}">添加问答</button>
             </div>
             
-            <div class="question-list">
-                {% for i in range(5) %}
+            <div class="question-list" id="qeustion-list">
+                <!-- {% for i in range(5) %}
                 <div class="question">
                     <h3><a class="remove" href="javascript:;">移除</a>前端开发中如何做到页面安全，防止 xss ，csrf 这样的欺骗及伪造？</h3>
                     <ul>
@@ -19,7 +19,7 @@
                         <li><a class="remove" href="javascript:;">移除</a>匿名用户, 上策。找律师告他说骚扰你</li>
                     </ul>    
                 </div>
-                {% endfor %}
+                {% endfor %} -->
             </div>
             
             <div class="form-actions">
@@ -28,7 +28,9 @@
             
         </div>
     </div>
-    
+    <script>
+        var NewsQestionList = {{ question_list_json }};
+    </script>
     
 </div>
 {{ render_page_footer }}

@@ -30,6 +30,11 @@
     width: 100%;
 }
 
+.question.drag-sorter-placeholder{
+    height: 66px;
+    border: dashed 2px green;
+}
+
 /* end for drap sorter */
 
 .news_nav{
@@ -39,36 +44,40 @@
     margin-bottom: 15px;
 }
 
-.news_list .news{
+.news_list .news,.news_list .top-story{
     padding:10px;
     border-bottom: dashed 1px #ddd;
 }
 
-.news .column{
+.news_list .top-story .title{
+    color: blue;
+}
+
+.news_list .column{
     display: inline-block;
     margin-right: 8px;
 }
 
-.news .status{
+.news_list .status{
     border-radius: 10px;
     width: 20px;
     height: 20px;
     font-size: 0;
 }
 
-.news.public .status{
+.news_list .public .status{
     background: green;
 }
 
-.news.hidden .status{
+.news_list .hidden .status{
     background: gray;
 }
 
-.news.updated .status{
+.news_list .updated .status{
     background: yellow;
 }
 
-.news.hidden .title{
+.news_list .hidden .title{
     color: #ccc;
 }
 
@@ -88,7 +97,13 @@
     font-weight: normal;
 }
 
+.news-questions .question h3, .news-questions .question ul{
+    margin: 0;
+}
 
+.news-questions .question ul{
+    margin-left: 30px;
+}
 
 
 
