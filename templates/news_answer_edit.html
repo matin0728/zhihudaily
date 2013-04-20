@@ -1,0 +1,42 @@
+{{ render_page_header }}
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        {{ render_sidebar }}
+        <div class="span10">
+            <h3>修改新闻答案</h3>
+            <p>新闻标题：{{ news_title }}</p>
+            <p>问题：{{ question_title }}</p>
+            <form action="">
+                <p>
+                    <textarea type="text" id="news-answer-content" style="width: 80%;height: 500px;" name="content" value="" />
+                </p>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary save-change">保存修改</button>
+                </div>
+                
+            </form>
+
+            
+        </div>
+    </div>
+    
+    
+</div>
+
+<script>
+$(function(){
+    $('#news-answer-content').tinymce({
+        script_url : '/static/js/tinymce/tinymce.min.js',
+        plugins: [
+                "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+                "searchreplace wordcount visualblocks visualchars code fullscreen",
+                "insertdatetime nonbreaking save table contextmenu directionality",
+                "paste"
+            ],
+        toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+    }); 
+});
+
+</script>
+{{ render_page_footer }}
