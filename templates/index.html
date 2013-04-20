@@ -10,7 +10,7 @@
                 <a href="{{ link_for_next_day }}">后 一天&gt;&gt;</a>
                 ，输入日期：<form style="display: inline"><input style="width:120px" placeholder="eg. 2013-04-20"/><input type="button" value="转到" /></form>
             </div>
-            <ol class="news_list">
+            <ol class="news_list" id="news-list">
                 {% for item in news %}
                 
                 {% if item.is_topstory %}
@@ -35,6 +35,10 @@
                     <span class="column edit"><a href="/news/{{ item.id }}/edit">Edit</a></span>
 
                     <span class="column edit"><a href="/news/{{ item.id }}/q_and_a">QAndA</a></span>
+
+                    <span class="column edit"><a href="javascript:;" data-action="remove">Remove</a></span>
+                    
+                    <span class="column edit"><a href="javascript:;" data-action="visibility">Visibility</a></span>
                     
                     <span class="column title"> 这是第一条新闻 {{ item.title }} </title>
                 </li>

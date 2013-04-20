@@ -1,3 +1,5 @@
+var newsId;
+
 var DragSorter = function(itemSelector){
     var items = $(itemSelector).attr('draggable', 'true'), placeholder, dragTarget;
 
@@ -18,10 +20,14 @@ var DragSorter = function(itemSelector){
         //prevent the event to bubble to question dragger.
         e.stopPropagation();
     }).on('dragenter', function(e){
-        if(placeholder){
-            if(this != dragTarget){
-                $(this).before($(placeholder));
-            }
+
+        if(placeholder && dragTarget){
+            $(this).before($(placeholder));
+            // if(this != dragTarget){
+            //     $(this).before($(placeholder));
+            // }
+        }else{
+            return false;
         }
     });
 };
@@ -38,28 +44,53 @@ NewsQuestionGroup.prototype.appendTo = function(container){
 };
 
 var questionPlaceHolder, questionDragTarget;
+
 NewsQuestionGroup.prototype.createDom = function(){
-    this.element_ = $('<div class="question" draggable="true" data-ddgroup="question" data-questionid="' + this.jsonData_.question_id + '"><h3><a class="remove remove-question" href="javascript:;">移除</a>'+ this.jsonData_.question_title +'</h3></div>');
+    this.element_ = $('<div class="question '+ this.jsonData_.visibility+'" draggable="true" data-ddgroup="question" data-questionid="' + this.jsonData_.question_id + '"><h3><a class="remove remove-question" data-action="remove-question" href="javascript:;">Remove</a><a class="edit" href="/news/'+newsId+'/question/'+this.jsonData_.question_id+'/edit">Edit</a><a class="edit" data-action="visibility">Visibility</a>'+ this.jsonData_.question_title +'</h3></div>');
     this.answersWrap_ = $('<ul></ul>').appendTo(this.element_);
     this.jsonData_.answers.forEach(function(answerDataJson){
         this.createAnswerEntry_(answerDataJson);
     }, this);
     
     $(this.element_).on('click', $.proxy(function(e){
-        if($(e.target).hasClass('remove-answer')){
-            e.stopPropagation();
-            //console.log('Remove answer.');
+        var action = $(e.target).attr('data-action');
+        
+        if(action == 'remove-answer' || action == 'answer-visibility'){
             var $answerDom = $(e.target).parents('li');
+            var questionDom = $($answerDom).parents('.question');
+
             var answer_id = $answerDom.attr('data-answerid');
-            var answerArray = [];
-            this.jsonData_.answers.forEach(function(answerDataJson){
-                if(answerDataJson.answer_id != answer_id){
-                    answerArray.push(answerDataJson);
-                }
-            }, this);
+            var question_id = $(questionDom).attr('data-questionid');
             
-            this.jsonData_.answers = answerArray;
-            $answerDom.remove();
+            e.stopPropagation();
+        }
+        
+        if(action == 'remove-answer'){
+            if(confirm('确定删除答案吗？')){
+                
+                //console.log('Remove answer.');
+
+                var answerArray = [];
+                this.jsonData_.answers.forEach(function(answerDataJson){
+                    if(answerDataJson.answer_id != answer_id){
+                        answerArray.push(answerDataJson);
+                    }
+                }, this);
+
+                this.jsonData_.answers = answerArray;
+                $answerDom.remove();
+                
+                $.post('/news/remove_answer', {'question_id':question_id, 'answer_id':answer_id});
+                
+            }
+        }else if(action == 'answer-visibility'){
+            if($($answerDom).hasClass('hidden')){
+               $($answerDom).removeClass('hidden');
+               $.post('/news/answer/'+answer_id+'/visibility', {'visible':'visible', 'question_id':question_id});
+            }else{
+                $($answerDom).addClass('hidden');
+                $.post('/news/answer/'+answer_id+'/visibility', {'visible':'hidden', 'question_id':question_id}); 
+            }
         }
     }, this)).on('dragstart', function(e){
             e.target.style.opacity = '0.4';
@@ -98,7 +129,7 @@ NewsQuestionGroup.prototype.createDom = function(){
                     t = $(e.target).parents('.question').get(0);;
                 }
                 
-                if(questionPlaceHolder && $(t).attr('data-ddgroup') == $(questionDragTarget).attr('data-ddgroup') && t != questionDragTarget){
+                if(questionPlaceHolder && $(t).attr('data-ddgroup') == $(questionDragTarget).attr('data-ddgroup')){
                     $(t).before($(questionPlaceHolder));
                 }
 
@@ -132,7 +163,7 @@ NewsQuestionGroup.prototype.addAnswerEntry = function(answerDataJson){
 
 NewsQuestionGroup.prototype.createAnswerEntry_ = function(answerDataJson){
     // var placeholder = this.placeholder;
-    $(['<li draggable="true" data-ddgroup="', this.jsonData_.question_id ,'" data-answerid="', answerDataJson.answer_id, '"><a class="remove remove-answer" href="javascript:;">移除</a>', answerDataJson.author, '，',  answerDataJson.summary, '</li>'].join(''))
+    $(['<li class="'+ answerDataJson.visibility+'" draggable="true" data-ddgroup="', this.jsonData_.question_id ,'" data-answerid="', answerDataJson.answer_id, '"><a class="remove remove-answer" data-action="remove-answer" href="javascript:;">Remove</a><a class="edit" href="/news/'+newsId+'/question/' + this.jsonData_.question_id +'/answer/'+answerDataJson.answer_id+'/edit">Edit</a><a class="edit" data-action="answer-visibility" href="javascript:;">Visibility</a>', answerDataJson.author, '，',  answerDataJson.summary, '</li>'].join(''))
         .appendTo(this.answersWrap_).on('dragstart', $.proxy(function(e){
             e.target.style.opacity = '0.4';
             if(!this.placeholder){
@@ -235,6 +266,42 @@ $(function(){
             });
         });
         
+        //Toggle visible button.
+        $('#news-list').click(function(e){
+            var action = $(e.target).attr('data-action');
+            
+            var item = $(e.target).parents('li');
+            
+            var id_ = $(e.target).parents('li').attr('data-itemid');
+            
+            
+            if(action == 'remove'){
+                // $(item).remove();
+                
+                $.post('/news/'+id_+'/remove', function(){
+                    $(item).remove();
+                });
+            }else if(action == 'visibility'){
+                
+                // if($(item).hasClass('hidden')){
+                //     $(item).removeClass('hidden').addClass('public');
+                // }else{
+                //     $(item).removeClass('public').addClass('hidden');
+                // }
+                
+                var visibility;
+                if($(item).hasClass('hidden')){
+                    $(item).removeClass('hidden').addClass('public');
+                    visibility = 'visible';
+                }else{
+                    $(item).removeClass('public').addClass('hidden');
+                    visibility = 'hidden';
+                }
+                
+                $.post('/news/'+id_+'/visibility', {'visible':visibility});
+            }
+        });
+        
     }
     
     
@@ -253,21 +320,46 @@ $(function(){
     }
     
     //news questions and answers
+    //newsId is a global value.
+    newsId = $('#news-id').val();
+    
     if($('#news-question-page').length){
         var questionList = new NewsQuestionList($('#qeustion-list'), NewsQestionList);
         questionList.createDom();
         
         $('#qeustion-list').on('click', function(e){
-            if($(e.target).hasClass('remove-question')){
-                //console.log('Remove question.');
+            var action = $(e.target).attr('data-action');
+            
+            if(action == 'remove-question' || action == 'visibility'){
                 var question_id = $(e.target).parents('.question').attr('data-questionid');
-                questionList.removeQuestion(question_id);
+                
+            }
+            
+            if(action == 'remove-question'){
+                //console.log('Remove question.');
+                if(confirm('删除问题吗？')){
+                    questionList.removeQuestion(question_id);
+                    $.post('/news/' +newsId+'/question/'+ question_id + '/remove');
+                }
+                
+            }else if(action == 'visibility'){
+                
+                var questionDom = $(e.target).parents('.question');
+                
+                if($(questionDom).hasClass('hidden')){
+                   $(questionDom).removeClass('hidden');
+                   $.post('/news/' +newsId+'/question/'+ question_id + '/visibility', {'visible':'visible'});
+                }else{
+                   $(questionDom).addClass('hidden');
+                   $.post('/news/' +newsId+'/question/'+ question_id + '/visibility', {'visible':'hidden'});
+                }
+                
             }
         });
         
         $('#btn-save').click(function(){
             var url = $(this).attr('data-url');
-            $.post(url, {order: questionList.getOrderJson()}, function(){
+            $.post(url, {order: JSON.stringify(questionList.getOrderJson())}, function(){
                 //refresh page.
                 window.location.reload(); 
             });

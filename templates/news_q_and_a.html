@@ -5,6 +5,7 @@
         {{ render_sidebar }}
         <div class="span10">
             <h2><a href="/news/{{news.id}}/edit">{{ news.title }}</a></h2>
+            <input type="hidden" id="news-id" value="{{ news.id }}" />
             <div class="input-append">
               <input class="input-xxlarge" id="item-to-add" placeholder="问题或者答案链接" type="text">
               <button class="btn" type="button" id="btn-add-item" data-url="{{get_item_json_url}}">添加问答</button>

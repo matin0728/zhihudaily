@@ -59,42 +59,50 @@ class NewsQuestionAndAnswerHandler(base_handler.BaseHandler):
         {
           'question_id': 123, 
           'question_title':'aaaaaaaaa',
+          'visibility': '',
           'answers':[
             {
               'answer_id': 'a1',
               'author': 'Jhon',
-              'summary': 'ddsfsdfsdf'
+              'summary': 'ddsfsdfsdf',
+              'visibility': 'hidden'
             },
             {
               'answer_id': 'b1',
               'author': 'Tomy',
-              'summary': 'frgdfdfdffd'
+              'summary': 'frgdfdfdffd',
+              'visibility': ''
             },
             {
               'answer_id': 'c1',
               'author': 'LadyGaga',
-              'summary': 'frgdfdfdffd'
+              'summary': 'frgdfdfdffd',
+              'visibility': ''
             }
           
           ]},
           {
             'question_id': 234, 
             'question_title':'It is too late to say apologize.',
+            'visibility': '',
             'answers':[
               {
                 'answer_id': 'a1',
                 'author': 'Jhon',
-                'summary': 'ddsfsdfsdf'
+                'summary': 'ddsfsdfsdf',
+                'visibility': ''
               },
               {
                 'answer_id': 'b1',
                 'author': 'Tomy',
-                'summary': 'frgdfdfdffd'
+                'summary': 'frgdfdfdffd',
+                'visibility': ''
               },
               {
                 'answer_id': 'c1',
                 'author': 'LadyGaga',
-                'summary': 'frgdfdfdffd'
+                'summary': 'frgdfdfdffd',
+                'visibility': 'hidden'
               }
 
             ]}
