@@ -14,9 +14,9 @@ var DragSorter = function(itemSelector){
             this.style.opacity = '1';
             $(placeholder).after(this).remove();
             dragTarget = null;
-            //prevent the event to bubble to question dragger.
-            e.stopPropagation();
         }
+        //prevent the event to bubble to question dragger.
+        e.stopPropagation();
     }).on('dragenter', function(e){
         if(placeholder){
             if(this != dragTarget){
@@ -80,15 +80,18 @@ NewsQuestionGroup.prototype.createDom = function(){
             // return false;
         }).on('dragend', function(e){
                 var t = e.target;
-                if(!$(e.target).hasClass('question')){
-                    t = $(e.target).parents('.question').get(0);
+                if(t.tagName !== 'LI'){
+                    if(!$(e.target).hasClass('question')){
+                        t = $(e.target).parents('.question').get(0);
+                    }
+
+                    t.style.opacity = '1';
+                    if(questionPlaceHolder){
+                        $(questionPlaceHolder).after($(t)).remove();
+                    }
+                    questionDragTarget = null;
                 }
-              
-                t.style.opacity = '1';
-                if(questionPlaceHolder){
-                    $(questionPlaceHolder).after($(t)).remove();
-                }
-                questionDragTarget = null;
+                
             }).on('dragenter', function(e){
                 var t = e.target;
                 if(!$(e.target).hasClass('question')){
