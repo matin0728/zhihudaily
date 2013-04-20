@@ -8,7 +8,7 @@
                 当前：{{ current_date }}， 
                 <a href="{{ link_for_previous_day }}">&lt;&lt;前一天</a> | 
                 <a href="{{ link_for_next_day }}">后 一天&gt;&gt;</a>
-                ，输入日期：<form style="display: inline"><input style="width:120px" placeholder="eg. 2013-04-20"/><input type="button" value="转到" /></form>
+                ，输入日期：<form style="display: inline"><input style="width:120px" placeholder="yyyymmdd"/><input type="button" value="转到" /></form>
             </div>
             <ol class="news_list" id="news-list">
                 {% for item in news %}
