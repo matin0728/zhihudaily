@@ -277,10 +277,14 @@ $(function(){
             
             if(action == 'remove'){
                 // $(item).remove();
-                
-                $.post('/news/'+id_+'/remove', function(){
+                if(confirm('确定删除新闻吗？')){
                     $(item).remove();
-                });
+                    $.post('/news/'+id_+'/remove');
+                    // $.post('/news/'+id_+'/remove', function(){
+                    //       $(item).remove();
+                    //   });
+                }
+
             }else if(action == 'visibility'){
                 
                 // if($(item).hasClass('hidden')){
