@@ -183,7 +183,7 @@ NewsQuestionGroup.prototype.createAnswerEntry_ = function(answerDataJson){
                 }
                 this.dragTarget = null;
             }, this)).on('dragenter', $.proxy(function(e){
-                if(this.placeholder && $(e.target).attr('data-ddgroup') == $(this.dragTarget).attr('data-ddgroup') && e.target != this.dragTarget){
+                if(this.placeholder && $(e.target).attr('data-ddgroup') == $(this.dragTarget).attr('data-ddgroup')){
                     $(e.target).before($(this.placeholder));
                 }
             }, this));
