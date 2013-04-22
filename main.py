@@ -37,6 +37,21 @@ class MainHandler(base_handler.BaseHandler):
       }
       self.render('index.html', context)
       
+class TopStoryHandler(base_handler.BaseHandler):
+    def get(self):
+      news = [
+        { 'id': 123, 'status': 'public', 'title': 'Some title', 'is_topstory': True},
+        { 'id': 456, 'status': 'public', 'title': 'Some title', 'is_topstory': True},
+        { 'id': 789, 'status': 'hidden', 'title': 'Hidden news', 'is_topstory': True},
+        { 'id': 112233, 'status': 'updated', 'title': 'Updated news', 'is_topstory': True},
+        { 'id': 334455, 'status': 'public', 'title': 'Some title', 'is_topstory': True}
+      ]
+      context = { 
+        'url_for_publish': 'ajax-post-url',
+        'news' : news, 
+      }
+      self.render('top_story.html', context)
+      
 class NewsEditHandler(base_handler.BaseHandler):
     def get(self, news_id):    
       context = {
@@ -120,4 +135,6 @@ app = webapp2.WSGIApplication([
   webapp2.Route(r'/news/<news_id:\d+>/edit', handler=NewsEditHandler, name='news.edit'),
   webapp2.Route(r'/news/<news_id:\d+>/q_and_a', handler=NewsQuestionAndAnswerHandler, name='news.q_and_a'),
   webapp2.Route(r'/news/create', handler=NewsCreateHandler, name='news.edit'),
+  webapp2.Route(r'/news/topstory', handler=TopStoryHandler, name='news.topstory'),
+  
 ], debug=True)

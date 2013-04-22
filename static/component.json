@@ -3,6 +3,7 @@
     "version": "0.0.1",
     "dependencies": {
         "jquery": "~1.9.1",
+        "jquery-ui": "~1.9.2",
         "jquery-timepicker": "latest",
         "jquery-timepicker-addon": "latest"
     }

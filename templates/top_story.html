@@ -1,16 +1,10 @@
 {{ render_page_header }}
 
-<div class="container-fluid" id="news-list-page">
+<div class="container-fluid">
     <div class="row-fluid">
         {{ render_sidebar }}
         <div class="span10">
-            <h3>新闻列表</h3>
-            <div class="news_nav">
-                当前：{{ current_date }}， 
-                <a href="{{ link_for_previous_day }}">&lt;&lt;前一天</a> | 
-                <a href="{{ link_for_next_day }}">后 一天&gt;&gt;</a>
-                ，输入日期：<form style="display: inline"><input style="width:120px" id="news-list-date" placeholder="yyyymmdd"/><input type="button" value="转到" /></form>
-            </div>
+            <h3>TopStory 列表</h3>
             <ol class="news_list" id="news-list">
                 {% for item in news %}
                 
@@ -50,6 +44,7 @@
               <!-- <button type="submit" class="btn btn-primary save-change" id="btn-save" data-url="{{ url_for_save_change }}">保存修改，但不发布</button> -->
               <button type="submit" class="btn btn-success save-change" id="btn-save-and-publish" data-url="{{ url_for_publish }}">保存修改，同时发布</button>
             </div>
+
             
         </div>
     </div>

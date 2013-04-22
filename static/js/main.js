@@ -250,8 +250,14 @@ NewsQuestionList.prototype.removeQuestion = function(question_id){
 
 
 $(function(){
-    //News list page entry.
+    //News list page and topstory page entry.
     if($('#news-list-page').length){
+        //datepicker:
+        $('#news-list-date').datepicker({
+            dateFormat: 'yymmdd'
+        });
+        
+        
         new DragSorter('.news_list > .news');
         
         $('.save-change').click(function(e){
@@ -311,6 +317,11 @@ $(function(){
     
     //news edit page.
     if($('#news-edit-page').length){
+        $('#publish_date').datetimepicker({
+            dateFormat: 'yymmdd'
+        });
+        
+        
         $('#content').tinymce({
             script_url : '/static/js/tinymce/tinymce.min.js',
             plugins: [
