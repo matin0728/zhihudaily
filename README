@@ -1,0 +1,8 @@
+Install Guide:
+
+We use bower to manage frontend dependencies,
+to build js and css dendencies:
+
+cd static
+npm install -g bower
+bower install
