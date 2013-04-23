@@ -86,10 +86,10 @@ NewsQuestionGroup.prototype.createDom = function(){
         }else if(action == 'answer-visibility'){
             if($($answerDom).hasClass('hidden')){
                $($answerDom).removeClass('hidden');
-               $.post('/news/answer/'+answer_id+'/visible', {'visible':'visible', 'question_id':question_id});
+               $.post('/answer/'+answer_id+'/visible', {'visible':'visible', 'question_id':question_id});
             }else{
                 $($answerDom).addClass('hidden');
-                $.post('/news/answer/'+answer_id+'/visible', {'visible':'hidden', 'question_id':question_id}); 
+                $.post('/answer/'+answer_id+'/visible', {'visible':'hidden', 'question_id':question_id}); 
             }
         }
     }, this)).on('dragstart', function(e){
@@ -370,10 +370,10 @@ $(function(){
                 
                 if($(questionDom).hasClass('hidden')){
                    $(questionDom).removeClass('hidden');
-                   $.post('/news/' +newsId+'/question/'+ question_id + '/visible', {'visible':'visible'});
+                   $.post('/question/'+ question_id + '/visible', {'visible':'visible'});
                 }else{
                    $(questionDom).addClass('hidden');
-                   $.post('/news/' +newsId+'/question/'+ question_id + '/visible', {'visible':'hidden'});
+                   $.post('/question/'+ question_id + '/visible', {'visible':'hidden'});
                 }
                 
             }
