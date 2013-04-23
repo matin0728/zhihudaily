@@ -408,7 +408,7 @@ $(function(){
                 
                 //For production.
                 var url = $(this).attr('data-url');
-                $.get(url + '?resource=' + encodeURIComponent(resourceUrl), function(data){
+                $.post(url, {'resource':encodeURIComponent(resourceUrl)}, function(data){
                     questionList.addItem(data);
                 });
             }
