@@ -257,6 +257,13 @@ $(function(){
             dateFormat: 'yymmdd'
         });
         
+        $('#btn-date-selector').click(function(e){
+            var val = $('#news-list-date').val();
+            if(val){
+                window.location.href = '/news/list/' + val;
+            }
+        });
+        
         
         new DragSorter('.news_list > .news');
         
@@ -401,7 +408,7 @@ $(function(){
                 
                 //For production.
                 var url = $(this).attr('data-url');
-                $.get(resourceUrl + '?resource=' + encodeURIComponent(url), function(data){
+                $.get(url + '?resource=' + encodeURIComponent(resourceUrl), function(data){
                     questionList.addItem(data);
                 });
             }
