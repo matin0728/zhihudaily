@@ -6,10 +6,15 @@
         <div class="span10">
             <h3>修改新闻问题</h3>
             <p>新闻标题：</p>
-            <form action="">
-                <p>
-                    <input type="text" style="width: 300px" name="title" value="" />
-                </p>
+            <form action="" method="POST">
+                <fieldset>
+                    
+                <label>原文链接</label>
+                <input type="text" class="input-xxlarge" name="origin_resource" value="{{question.origin_resource}}" />
+                
+                <label>标题</label>
+                <input type="text" class="input-xxlarge" name="title" value="{{question.title}}" />
+                </fieldset>
                 <div class="form-actions">
                   <button type="submit" class="btn btn-primary save-change">保存修改</button>
                 </div>

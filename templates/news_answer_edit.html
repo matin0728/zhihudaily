@@ -7,10 +7,22 @@
             <h3>修改新闻答案</h3>
             <p>新闻标题：{{ news_title }}</p>
             <p>问题：{{ question_title }}</p>
-            <form action="">
+            <form action="" method="POST">
+                <fieldset>
+                    
+                <label>原文链接</label>
+                <input type="text" class="input-xxlarge" name="origin_resource" value="{{answer.origin_resource}}" />
+                <label>作者</label>
+                <input type="text" class="input-xxlarge" name="author" value="{{answer.author}}"/>
+                <label>个人介绍</label>
+                <input type="text" class="input-xxlarge" name="bio" value="{{answer.author_bio}}" />
+                <label>头像</label>
+                <input type="text" class="input-xxlarge" name="avator" value="{{answer.author_avator}}" />
+                <label>答案正文</label>
                 <p>
-                    <textarea type="text" id="news-answer-content" style="width: 80%;height: 500px;" name="content" value="" />
+                    <textarea type="text" id="news-answer-content" style="width: 80%;height: 500px;" name="content">{{answer.content}}</textarea>
                 </p>
+                </fieldset>
                 <div class="form-actions">
                   <button type="submit" class="btn btn-primary save-change">保存修改</button>
                 </div>

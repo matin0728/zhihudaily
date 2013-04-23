@@ -46,7 +46,7 @@ NewsQuestionGroup.prototype.appendTo = function(container){
 var questionPlaceHolder, questionDragTarget;
 
 NewsQuestionGroup.prototype.createDom = function(){
-    this.element_ = $('<div class="question '+ this.jsonData_.visibility+'" draggable="true" data-ddgroup="question" data-questionid="' + this.jsonData_.question_id + '"><h3><a class="remove remove-question" data-action="remove-question" href="javascript:;">Remove</a><a class="edit" href="/news/'+newsId+'/question/'+this.jsonData_.question_id+'/edit">Edit</a><a class="edit" data-action="visibility">Visibility</a>'+ this.jsonData_.question_title +'</h3></div>');
+    this.element_ = $('<div class="question '+ this.jsonData_.visibility+'" draggable="true" data-ddgroup="question" data-questionid="' + this.jsonData_.question_id + '"><h3><a class="remove remove-question" data-action="remove-question" href="javascript:;">Remove</a><a class="edit" href="/question/'+this.jsonData_.question_id+'/edit">Edit</a><a class="edit" data-action="visibility">Visibility</a>'+ this.jsonData_.question_title +'</h3></div>');
     this.answersWrap_ = $('<ul></ul>').appendTo(this.element_);
     this.jsonData_.answers.forEach(function(answerDataJson){
         this.createAnswerEntry_(answerDataJson);
@@ -163,7 +163,7 @@ NewsQuestionGroup.prototype.addAnswerEntry = function(answerDataJson){
 
 NewsQuestionGroup.prototype.createAnswerEntry_ = function(answerDataJson){
     // var placeholder = this.placeholder;
-    $(['<li class="'+ answerDataJson.visibility+'" draggable="true" data-ddgroup="', this.jsonData_.question_id ,'" data-answerid="', answerDataJson.answer_id, '"><a class="remove remove-answer" data-action="remove-answer" href="javascript:;">Remove</a><a class="edit" href="/news/'+newsId+'/question/' + this.jsonData_.question_id +'/answer/'+answerDataJson.answer_id+'/edit">Edit</a><a class="edit" data-action="answer-visibility" href="javascript:;">Visibility</a>', answerDataJson.author, '，',  answerDataJson.summary, '</li>'].join(''))
+    $(['<li class="'+ answerDataJson.visibility+'" draggable="true" data-ddgroup="', this.jsonData_.question_id ,'" data-answerid="', answerDataJson.answer_id, '"><a class="remove remove-answer" data-action="remove-answer" href="javascript:;">Remove</a><a class="edit" href="/answer/'+answerDataJson.answer_id+'/edit">Edit</a><a class="edit" data-action="answer-visibility" href="javascript:;">Visibility</a>', answerDataJson.author, '，',  answerDataJson.summary, '</li>'].join(''))
         .appendTo(this.answersWrap_).on('dragstart', $.proxy(function(e){
             e.target.style.opacity = '0.4';
             if(!this.placeholder){
