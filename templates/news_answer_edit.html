@@ -14,8 +14,8 @@
                 <input type="text" class="input-xxlarge" name="origin_resource" value="{{answer.origin_resource}}" />
                 <label>作者</label>
                 <input type="text" class="input-xxlarge" name="author" value="{{answer.author}}"/>
-                <label>个人介绍</label>
-                <input type="text" class="input-xxlarge" name="bio" value="{{answer.author_bio}}" />
+                <label>个人介绍(<span id="count-bio"></span>)</label>
+                <input type="text" id="bio" class="input-xxlarge" name="bio" value="{{answer.author_bio}}" />
                 <label>头像</label>
                 <input type="text" class="input-xxlarge" name="avator" value="{{answer.author_avator}}" />
                 <label>答案正文</label>
@@ -51,4 +51,13 @@ $(function(){
 });
 
 </script>
+
+
+<script>
+
+$(function(){
+    new CharactorCounter($('#bio'), $('#count-bio'));
+});
+</script>
+
 {{ render_page_footer }}

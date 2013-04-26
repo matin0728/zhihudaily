@@ -1,3 +1,38 @@
+var getCount = function(txt){
+    if(!txt){
+        return 0;
+    }
+    txt = txt.replace(/^\s+/,'').replace(/\s+$/,'');
+
+        if (!txt) {
+            return 0;
+        }
+
+        //count new line marker as 1 charactor:replace(/\n/g, "a")
+        var count = Math.ceil(txt.replace(/(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g,
+            "aaaaaaaaaaaaaaaaaaaa")
+            //.replace(/\s{2,}/g, "aa")
+            .replace(/\n/g, "a")
+            .replace(/\s/g, "a")
+            .replace(/[\u3000-\u303F\u4E00-\u9FA5\uf900-\ufa2d\uFF00-\uFFEF]/g, "aa").length / 2);
+            
+    return count;
+}
+
+var CharactorCounter = function(el, targetEl){
+    this.$el = $(el);
+    this.targetEl_ = $(targetEl);
+    this.checkCount = function(){
+        var txt = this.$el.val();
+        var count = getCount(txt);
+                
+         $(this.targetEl_).html(count);
+    };
+    
+    this.$el.bind('keyup click blur focus change paste', $.proxy(this.checkCount, this));
+};
+
+
 var newsId;
 
 var DragSorter = function(itemSelector){
@@ -337,7 +372,7 @@ $(function(){
                     "insertdatetime nonbreaking save table contextmenu directionality",
                     "paste"
                 ],
-            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
         });
     }
     

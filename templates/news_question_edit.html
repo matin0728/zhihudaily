@@ -12,8 +12,8 @@
                 <label>原文链接</label>
                 <input type="text" class="input-xxlarge" name="origin_resource" value="{{question.origin_resource}}" />
                 
-                <label>标题</label>
-                <input type="text" class="input-xxlarge" name="title" value="{{question.title}}" />
+                <label>标题(<span id="count-title"></span>)</label>
+                <input type="text" id="title" class="input-xxlarge" name="title" value="{{question.title}}" />
                 </fieldset>
                 <div class="form-actions">
                   <button type="submit" class="btn btn-primary save-change">保存修改</button>
@@ -27,4 +27,12 @@
     
     
 </div>
+
+<script>
+
+$(function(){
+    new CharactorCounter($('#title'), $('#count-title'));
+});
+</script>
+
 {{ render_page_footer }}

@@ -34,10 +34,13 @@ class MainHandler(base_handler.BaseHandler):
         'url_for_save_change': 'ajax-post-url',
         'url_for_publish': 'ajax-post-url',
         'news' : news, 
-        # 'question': {}
+        # 'question': {},
+        # 'answer': {},
       }
       self.render('index.html', context)
       # self.render('news_question_edit.html', context)
+      # self.render('news_answer_edit.html', context)
+      
       
 class TopStoryHandler(base_handler.BaseHandler):
     def get(self):

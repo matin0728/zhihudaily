@@ -11,9 +11,9 @@
             <h2>添加新闻</h2>
             {% endif %}
             <input name="news_id" type="hidden" value="{{news.id}}" />
-            <p class="field"><label for="title">标题</label><textarea id="title" name="title" cols="16" rows="2" required="required">{{news.title}}</textarea></p>
-            <p class="field"><label for="summary">摘要</label><textarea id="summary" name="summary" cols="15" rows="3">{{news.summary}}</textarea></p>
-            <p class="field"><label for="content">内容</label><textarea id="content" name="content" cols="15" rows="20" required="required">{{news.content}}</textarea></p>
+            <p class="field"><label for="title">标题(<span id="count-title"></span>)</label><textarea id="title" name="title" cols="16" rows="2" required="required">{{news.title}}</textarea></p>
+            <p class="field"><label for="summary">摘要(<span id="count-summary"></span>)</label><textarea id="summary" name="summary" cols="15" rows="3">{{news.summary}}</textarea></p>
+            <p class="field"><label for="content">内容(<span id="count-content"></span>)</label><textarea id="content" name="content" cols="15" rows="20" required="required">{{news.content}}</textarea></p>
             <p class="field"><label for="source_text">来源（文本）</label><input type="text" id="source_text" name="source_text" required="required" value="{{news.source_text}}"></p>
             <p class="field"><label for="source_url">来源（URL）</label><input type="text" id="source_url" name="source_url" value="{{news.source_url}}"></p>
             <p class="field"><label for="image">大图</label><input type="text" id="image" name="image" placeholder="宽 640，高 400+" value="{{news.image}}"></p>
@@ -50,4 +50,12 @@
     
     
 </div>
+<script>
+
+$(function(){
+    new CharactorCounter($('#title'), $('#count-title'));
+    new CharactorCounter($('#summary'), $('#count-summary'));
+    new CharactorCounter($('#content'), $('#count-content'));
+});
+</script>
 {{ render_page_footer }}
