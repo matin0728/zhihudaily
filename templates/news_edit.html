@@ -18,37 +18,37 @@
             <p class="field"><label for="source_url">来源（URL）</label><input type="text" id="source_url" name="source_url" value="{{news.source_url}}"></p>
             <p class="field"><label for="image">大图</label><input type="text" id="image" name="image" placeholder="宽 640，高 400+" value="{{news.image}}"></p>
             <p class="field"><label for="thumbnail">缩略图</label><input type="text" id="thumbnail" name="thumbnail" placeholder="110 * 110" value="{{news.thumbnail}}"></p>
-            <p class="field"><label for="publish_date">发布日期</label><input type="text" id="publish_date" name="publish_date" placeholder="格式为 yyyymmdd，留空为今天发布" value="{{news.publish_date}}" /></p>
-            
+            <p class="field"><label for="publish_time">发布日期</label><input type="text" id="publish_time" name="publish_time" placeholder="格式为 yyyymmdd，留空为今天发布" value="{{news.publish_date}}" /></p>
+
             {% if news.status != 'hidden' %}
             <p class="field"><label class="checkbox">是否可见<input type="checkbox" id="visibility" name="visibility" value="visible" checked='checked' /></label></p>
             {% else %}
             <p class="field"><label class="checkbox">是否可见<input type="checkbox" id="visibility" name="visibility" value="visible" /></label></p>
             {% endif %}
-            
+
             {% if news.is_topstory %}
             <p class="field"><label class="checkbox">是TopStory<input type="checkbox" id="is_topstory" name="is_topstory" value="1" checked='checked' /></label></p>
             {% else %}
             <p class="field"><label class="checkbox">是TopStory<input type="checkbox" id="is_topstory" name="is_topstory" value="1" /></label></p>
             {% endif %}
-            
+
             <div class="form-actions">
               {% if is_edit %}
               <button type="submit" class="btn btn-primary save-change">保存修改</button>
               {% else %}
               <button type="submit" class="btn btn-primary save-change" id="btn-save" data-url="{{ url_for_save_change }}">创建新闻</button>
-              
+
               {% endif %}
             </div>
-            
-            </form>
-            
 
-            
+            </form>
+
+
+
         </div>
     </div>
-    
-    
+
+
 </div>
 <script>
 
