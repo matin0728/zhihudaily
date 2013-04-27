@@ -29,7 +29,7 @@ var CharactorCounter = function(el, targetEl){
          $(this.targetEl_).html(count);
     };
     
-    this.$el.bind('keyup click blur focus change paste', $.proxy(this.checkCount, this));
+    this.$el.bind('keyup click blur focus change paste', $.proxy(this.checkCount, this)).trigger('click');
 };
 
 
