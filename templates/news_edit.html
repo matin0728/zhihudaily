@@ -13,11 +13,14 @@
             <input name="news_id" type="hidden" value="{{news.id}}" />
             <p class="field"><label for="title">标题(<span id="count-title"></span>)</label><textarea id="title" name="title" cols="16" rows="2" required="required">{{news.title}}</textarea></p>
             <p class="field"><label for="summary">摘要(<span id="count-summary"></span>)</label><textarea id="summary" name="summary" cols="15" rows="3">{{news.summary}}</textarea></p>
-            <p class="field"><label for="content">内容(<span id="count-content"></span>)</label><textarea id="content" name="content" cols="15" rows="20" required="required">{{news.content}}</textarea></p>
+            <p class="field"><label for="content">内容</label><textarea id="content" name="content" cols="15" rows="20" required="required">{{news.content}}</textarea></p>
             <p class="field"><label for="source_text">来源（文本）</label><input type="text" id="source_text" name="source_text" required="required" value="{{news.source_text}}"></p>
             <p class="field"><label for="source_url">来源（URL）</label><input type="text" id="source_url" name="source_url" value="{{news.source_url}}"></p>
-            <p class="field"><label for="image">大图</label><input type="text" id="image" name="image" placeholder="宽 640，高 400+" value="{{news.image}}"></p>
-            <p class="field"><label for="thumbnail">缩略图</label><input type="text" id="thumbnail" name="thumbnail" placeholder="110 * 110" value="{{news.thumbnail}}"></p>
+            <p class="field"><label for="image">大图 ( 640 * 400+ )</label><input type="text" id="image" name="image" placeholder="宽 640，高 400+" value="{{news.image}}"></p>
+            <!-- <p>
+                            <input id="fileupload" type="file" name="files[]" data-url="server/php/" multiple>
+                        </p> -->
+            <p class="field"><label for="thumbnail">缩略图 ( 110 * 110 )</label><input type="text" id="thumbnail" name="thumbnail" placeholder="110 * 110" value="{{news.thumbnail}}"></p>
             <p class="field"><label for="publish_time">发布日期</label><input type="text" id="publish_time" name="publish_time" placeholder="格式为 yyyymmdd，留空为今天发布" value="{{news.publish_date}}" /></p>
 
             {% if news.status != 'hidden' %}

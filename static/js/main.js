@@ -1,3 +1,44 @@
+var imageCropper = function(inputField, refDomElement, postUrl){
+    this.inputField_ = inputField;
+    //We will generate widget element after this element.
+    this.refDomElement_ = refDomElement;
+    
+    this.previewImage_ = null;
+    
+    this.domHtml_ = '<div class="image-cropper"><input class="image-cropper-input-file" type="file" name="files[]" data-url="/image_upload" /><div class="result"></div></div>';
+    
+    this.init();
+};
+
+imageCropper.prototype.init = function(){
+    this.domElement_ = $(this.domHtml_);
+    $(this.refDomElement_).after(this.domElement_);
+    var tmpTarget = this.domElement_.find('.result');    
+    var that = this;
+    $(this.domElement_).find('.image-cropper-input-file').fileupload({
+            dataType: 'json',
+            done: function (e, data) {
+                $.each(data.result.files, function (index, file) {
+                    
+                    var imageSrc = file.name;
+                    
+                    $(that.inputField_).val(imageSrc);
+                    
+                    if(!that.previewImage_){
+                        that.previewImage_ = $('<img />').attr('src', imageSrc);
+                        $(that.refDomElement_).after(that.previewImage_);
+                    }else{
+                        $(that.previewImage_).attr('src', imageSrc);
+                    }
+                    
+                    // $('<p/>').text(file.name).appendTo(document.body);
+                });
+            }
+        });
+};
+
+
+
 var getCount = function(txt){
     if(!txt){
         return 0;
@@ -359,6 +400,14 @@ $(function(){
 
     //news edit page.
     if($('#news-edit-page').length){
+        
+        //Init image cropper
+        new imageCropper($('#image'), $('#image').parent().eq(0));
+        new imageCropper($('#thumbnail'), $('#thumbnail').parent().eq(0));
+        
+        //end for image cropper
+        
+        
         $('#publish_time').datetimepicker({
             dateFormat: 'yy-mm-dd'
         });

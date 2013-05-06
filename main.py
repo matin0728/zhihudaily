@@ -18,6 +18,13 @@ import webapp2
 import base_handler
 import json
 
+class ImageUploadHandler(base_handler.BaseHandler):
+  def post(self):
+    #image_file = self.request.get('files')
+    self.response.headers.add_header("Content-Type", "application/json")
+    self.response.out.write(json.dumps({'files':[{'name':'http://p3.zhimg.com/b1/a0/b1a09e0425d8f0977a125d2fc3c2f9e5_m.jpg'}]}))
+    
+
 class MainHandler(base_handler.BaseHandler):
     def get(self):
       news = [
@@ -141,5 +148,6 @@ app = webapp2.WSGIApplication([
   webapp2.Route(r'/news/<news_id:\d+>/q_and_a', handler=NewsQuestionAndAnswerHandler, name='news.q_and_a'),
   webapp2.Route(r'/news/create', handler=NewsCreateHandler, name='news.edit'),
   webapp2.Route(r'/news/topstory', handler=TopStoryHandler, name='news.topstory'),
+  webapp2.Route(r'/image_upload', handler=ImageUploadHandler, name='imageupload'),
   
 ], debug=True)

@@ -6,6 +6,7 @@
         "jquery-ui": "~1.9.2",
         "jquery-timepicker": "latest",
         "jquery-timepicker-addon": "latest",
-        "jquery-file-upload": "latest"
+        "jquery-file-upload": "latest",
+        "jcrop":"latest"
     }
 }
