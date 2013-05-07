@@ -41,6 +41,12 @@
                     
                     <span class="column edit"><a href="javascript:;" data-action="visibility">Visibility</a></span>
                     
+                    {% if not item.pushed %}
+                    <span class="column edit"><a href="/news/{{ item.id }}/push">Push</a></span>
+                    {% else %}
+                    <span class="column pushed"><a href="/news/{{ item.id }}/push">Push</a></span>
+                    {% endif %}
+                    
                     <span class="column title"> 这是第一条新闻 {{ item.title }} </title>
                 </li>
                 {% endfor %}
@@ -49,6 +55,14 @@
             <div class="form-actions">
               <!-- <button type="submit" class="btn btn-primary save-change" id="btn-save" data-url="{{ url_for_save_change }}">保存修改，但不发布</button> -->
               <button type="submit" class="btn btn-success save-change" id="btn-save-and-publish" data-url="{{ url_for_publish }}">保存修改，同时发布</button>
+            </div>
+            
+            <div class="alert alert-info">
+                <ul>
+                    <li>蓝色文字是 TopStory</li>
+                    <li>绿圆点：正常显示，灰色圆点：不可见，黄色圆点：已更新未发布</li>
+                    <li>"Push"为绿色：已推送内容</li>
+                </ul>
             </div>
             
         </div>

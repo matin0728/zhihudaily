@@ -1,0 +1,29 @@
+{{ render_page_header }}
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        {{ render_sidebar }}
+        
+        
+        <div class="span10">
+            
+            <h3>推送新闻</h3>
+            <form action="" method="POST">
+                <fieldset>
+                    
+                <label>新闻标题</label>
+                <input type="text" required="required" class="input-xxlarge" name="title" value="{{news.title}}" />
+                
+                </fieldset>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary save-change">推送新闻</button>
+                </div>
+                
+            </form>
+            
+        </div>
+    </div>
+    
+    
+</div>
+{{ render_page_footer }}

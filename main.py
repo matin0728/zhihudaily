@@ -28,11 +28,11 @@ class ImageUploadHandler(base_handler.BaseHandler):
 class MainHandler(base_handler.BaseHandler):
     def get(self):
       news = [
-        { 'id': 123, 'status': 'public', 'title': 'Some title', 'is_topstory': True},
-        { 'id': 456, 'status': 'public', 'title': 'Some title', 'is_topstory': False},
-        { 'id': 789, 'status': 'hidden', 'title': 'Hidden news', 'is_topstory': False},
-        { 'id': 112233, 'status': 'updated', 'title': 'Updated news', 'is_topstory': False},
-        { 'id': 334455, 'status': 'public', 'title': 'Some title', 'is_topstory': False}
+        { 'id': 123, 'status': 'public', 'title': 'Some title', 'is_topstory': True, 'pushed': False},
+        { 'id': 456, 'status': 'public', 'title': 'Some title', 'is_topstory': False, 'pushed': False},
+        { 'id': 789, 'status': 'hidden', 'title': 'Hidden news', 'is_topstory': False, 'pushed': False},
+        { 'id': 112233, 'status': 'updated', 'title': 'Updated news', 'is_topstory': False, 'pushed': True},
+        { 'id': 334455, 'status': 'public', 'title': 'Some title', 'is_topstory': False, 'pushed': False}
       ]
       context = { 
         'current_date':'2013-04-19',
@@ -79,6 +79,14 @@ class NewsCreateHandler(base_handler.BaseHandler):
         'news': {}
       }
       self.render('news_edit.html', context)
+      
+class NewsPushHandler(base_handler.BaseHandler):
+    def get(self, news_id):    
+      context = {
+        'news': {}
+      }
+      self.render('news_push.html', context)      
+
             
 class NewsQuestionAndAnswerHandler(base_handler.BaseHandler):
     def get(self, news_id):
@@ -146,6 +154,8 @@ app = webapp2.WSGIApplication([
   webapp2.Route(r'/', handler=MainHandler, name='index'),
   webapp2.Route(r'/news/<news_id:\d+>/edit', handler=NewsEditHandler, name='news.edit'),
   webapp2.Route(r'/news/<news_id:\d+>/q_and_a', handler=NewsQuestionAndAnswerHandler, name='news.q_and_a'),
+  webapp2.Route(r'/news/<news_id:\d+>/push', handler=NewsPushHandler, name='news.push'),
+  
   webapp2.Route(r'/news/create', handler=NewsCreateHandler, name='news.edit'),
   webapp2.Route(r'/news/topstory', handler=TopStoryHandler, name='news.topstory'),
   webapp2.Route(r'/image_upload', handler=ImageUploadHandler, name='imageupload'),

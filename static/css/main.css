@@ -69,6 +69,11 @@
     background: green;
 }
 
+.news_list .pushed > a{
+    color: green;
+}
+
+
 .news_list .hidden .status{
     background: gray;
 }
@@ -109,6 +114,7 @@
 .question-list .hidden{
     color: #ccc;
 }
+
 
 
 .image-cropper{
