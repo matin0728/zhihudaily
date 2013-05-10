@@ -20,16 +20,47 @@ $.widget( "custom.slideCropper", {
         });
         
         this._on(this.slider_, {
-           slidechange:  'onResizeRateChange_' 
+           slidechange:  'onResizeRateChange_',
+           slide: 'updateRate_'
         });
           
         this.setResizeRate(100);
         
+        var lb_ = $('<label>Fit to selection</label>').insertAfter(this.slider_);
+        
+        var that = this;
+        $('<input type="checkbox">').css('margin-left', '15px').appendTo(lb_).on('change', function(e){
+            //console.log(this.checked);
+            if(this.checked){
+                that.resizeToSelection_();
+            }
+        });
+        
+      },
+      resizeToSelection_: function(){
+          //using ceil to ensure image is bigger that selection.
+          var rate = Math.ceil((this.options.minSize[0] / this.options.originWidth) * 100);
+          //console.log(rate);
+          this.slider_.slider('value', rate);
       },
     
       onResizeRateChange_ : function(e, ui) {
           //TODO
           this.setResizeRate(ui.value);
+          
+          if(this.scrollPosition_ && this.scrollPosition_ > 0){
+              document.body.scrollTop = this.scrollPosition_;
+          }
+          
+          
+          //setTimeout($.proxy(function(){document.body.scrollTop = this.scrollPosition_}, this), 50);
+      },
+      
+      updateRate_: function(e, ui){
+          this.scrollPosition_ = document.body.scrollTop;
+          console.log('record: ' + this.scrollPosition_);
+          
+          this.message_.html('ResizeRate: ' + ui.value + '%');
       },
       
       setResizeRate : function(rate){
@@ -73,7 +104,7 @@ $.widget( "custom.slideCropper", {
                 this.jcrop_.setSelect([0, 0, 100, 100]);
            }
            
-           this.jcrop_.focus();
+           //this.jcrop_.focus();
            // this.showPreview();
            
       },
@@ -96,7 +127,10 @@ $.widget( "custom.slideCropper", {
                  this.previewImage_.remove();
              }else{
                  //First time, create a button.
-                 $('<button>').text('确定').button().appendTo(this.element).on('click', $.proxy(this.onConfirm_, this));
+                 //this.button_ = $('<button>').text('确定').button().appendTo(this.element).on('click', $.proxy(this.onConfirm_, this));
+                 
+                 this.button_ = $('<button>').css('margin', '15px 0').text('确定').button().insertAfter(this.slider_).on('click', $.proxy(this.onConfirm_, this));
+                 
              }
             
             var currentSelection = coords;
@@ -110,9 +144,7 @@ $.widget( "custom.slideCropper", {
              if(h > this.options.maxSize[1]){
                     h = this.options.maxSize[1];
              }
-
-             // debugger;
-
+             
              var preview = $('<div class="image-cropper-preivew"></div>').width(currentSelection.w + 'px').height(h + 'px');
 
              var previewImage = $('<img class="image-cropper-preview-image">').attr('src', this.options.source).appendTo(preview);
