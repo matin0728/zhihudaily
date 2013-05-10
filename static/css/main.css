@@ -121,7 +121,16 @@
     margin-bottom:20px;
 }
 
+.image-cropper-preivew{
+    overflow: hidden;
+    margin: 15px 0;
+}
 
+.image-cropper-preview-image{
+    display: inline;
+    border: 0;
+    max-width: none;
+}
 
 
 

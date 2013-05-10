@@ -1,9 +1,198 @@
-var imageCropper = function(inputField, refDomElement, postUrl){
+$.widget( "custom.slideCropper", {
+      // default options
+      options: {
+        minSize: [100, 100],  //cropped width.
+        maxSize: [100, 100], //cropped height.
+        source: null,
+        originWidth: 100,  //origin image size :width, height 
+        originHeight: 100,
+        selectionCallback: null
+      },
+ 
+      // the constructor
+      _create: function() {
+        this.message_ = $('<div>').appendTo( this.element );
+          
+        this.slider_ = $('<div>').css('width', '200px').appendTo( this.element ).slider({
+            max: 100,
+            min: 0,
+            value: 100
+        });
+        
+        this._on(this.slider_, {
+           slidechange:  'onResizeRateChange_' 
+        });
+          
+        this.setResizeRate(100);
+        
+      },
+    
+      onResizeRateChange_ : function(e, ui) {
+          //TODO
+          this.setResizeRate(ui.value);
+      },
+      
+      setResizeRate : function(rate){
+          this.message_.html('ResizeRate: ' + rate + '%');
+          
+          if(this.reInitJcropTimout){
+              clearTimeout(this.reInitJcropTimout);
+          }
+      
+          this.reInitJcropTimout = setTimeout(this.reInitJcrop.bind(this, rate), 500);
+          
+      },
+      
+      reInitJcrop : function(rate){
+          if(this.jcrop_){
+              this.jcrop_.destroy();
+          }
+          
+          if(this.sourceEl_){
+              this.sourceEl_.remove();
+          }
+          
+          var w = Math.floor(this.options.originWidth * rate / 100),
+              h = Math.floor(this.options.originHeight * rate / 100);
+              
+          // console.log('New width' + w + ', new height: ' + h );
+          
+          this.sourceEl_ = $('<img />').appendTo( this.element ).width(w + 'px').height(h + 'px').attr('src', this.options.source);
+
+          this.jcrop_ = $.Jcrop(this.sourceEl_, {
+              onChange: $.proxy(this.showPreview, this),
+              allowSelect: false
+          });
+          
+          
+          if(w > this.options.minSize[0]){
+                this.jcrop_.setOptions({minSize: this.options.minSize, maxSize: this.options.maxSize});
+              
+                this.jcrop_.setSelect([0, 0, this.options.minSize[0], this.options.minSize[1]]);
+           }else{
+                this.jcrop_.setSelect([0, 0, 100, 100]);
+           }
+           
+           this.jcrop_.focus();
+           // this.showPreview();
+           
+      },
+      
+      onConfirm_: function(e){
+  
+          var selection_ = this.jcrop_.tellScaled();
+          var scaleRate = this.slider_.slider('value');
+          if(this.options.selectionCallback){
+             this.options.selectionCallback(selection_, scaleRate, this.options.source); 
+          }
+          
+          //return false to prevent form to be submited.
+          return false;
+      },
+      
+      showPreview: function(coords){
+          //build preview image.
+             if(this.previewImage_){
+                 this.previewImage_.remove();
+             }else{
+                 //First time, create a button.
+                 $('<button>').text('确定').button().appendTo(this.element).on('click', $.proxy(this.onConfirm_, this));
+             }
+            
+            var currentSelection = coords;
+             // var currentSelection = this.jcrop_.tellScaled();
+
+             var h = currentSelection.h;
+             // if(currentSelection.h < this.options.minSize[1]){
+             //     h = this.options.minSize[1];
+             // }else 
+
+             if(h > this.options.maxSize[1]){
+                    h = this.options.maxSize[1];
+             }
+
+             // debugger;
+
+             var preview = $('<div class="image-cropper-preivew"></div>').width(currentSelection.w + 'px').height(h + 'px');
+
+             var previewImage = $('<img class="image-cropper-preview-image">').attr('src', this.options.source).appendTo(preview);
+
+             this.previewImage_ = preview;
+             this.element.find('.jcrop-holder').after(preview);
+
+             previewImage.css('margin-left', -currentSelection.x + 'px').css('margin-top', -currentSelection.y + 'px');
+             
+             
+      },
+      
+      
+      // called when created, and later when changing options
+      // _refresh: function() {
+      //   this.element.css( "background-color", "rgb(" +
+      //     this.options.red +"," +
+      //     this.options.green + "," +
+      //     this.options.blue + ")"
+      //   );
+      //  
+      //   // trigger a callback/event
+      //   this._trigger( "change" );
+      // },
+ 
+      // // a public method to change the color to a random value
+      // // can be called directly via .colorize( "random" )
+      // random: function( event ) {
+      //   var colors = {
+      //     red: Math.floor( Math.random() * 256 ),
+      //     green: Math.floor( Math.random() * 256 ),
+      //     blue: Math.floor( Math.random() * 256 )
+      //   };
+      //  
+      //   // trigger an event, check if it's canceled
+      //   if ( this._trigger( "random", event, colors ) !== false ) {
+      //     this.option( colors );
+      //   }
+      // },
+ 
+      // events bound via _on are removed automatically
+      // revert other modifications here
+      _destroy: function() {
+        // remove generated elements
+        this.element.remove();
+      },
+ 
+      // _setOptions is called with a hash of all options that are changing
+      // always refresh when changing options
+      // _setOptions: function() {
+      //   // _super and _superApply handle keeping the right this-context
+      //   this._superApply( arguments );
+      //   this._refresh();
+      // },
+ 
+      // _setOption is called for each individual option that is changing
+      // _setOption: function( key, value ) {
+      //   // prevent invalid color values
+      //   if ( /red|green|blue/.test(key) && (value < 0 || value > 255) ) {
+      //     return;
+      //   }
+      //   this._super( key, value );
+      // }
+    });
+
+
+var imageCropper = function(inputField, refDomElement, minSize, maxSize, opt_postUrl){
     this.inputField_ = inputField;
     //We will generate widget element after this element.
     this.refDomElement_ = refDomElement;
     
     this.previewImage_ = null;
+    
+    this.slideCropper_ = null;
+    
+    this.minSize_ = minSize;
+    
+    this.maxSize_ = maxSize;
+    
+    this.postUrl = opt_postUrl || '/resize_image';
     
     this.domHtml_ = '<div class="image-cropper"><input class="image-cropper-input-file" type="file" name="files[]" data-url="/image_upload" /><div class="result"></div></div>';
     
@@ -19,22 +208,47 @@ imageCropper.prototype.init = function(){
             dataType: 'json',
             done: function (e, data) {
                 $.each(data.result.files, function (index, file) {
-                    
-                    var imageSrc = file.name;
-                    
-                    $(that.inputField_).val(imageSrc);
-                    
-                    if(!that.previewImage_){
-                        that.previewImage_ = $('<img />').attr('src', imageSrc);
-                        $(that.refDomElement_).after(that.previewImage_);
-                    }else{
-                        $(that.previewImage_).attr('src', imageSrc);
-                    }
-                    
-                    // $('<p/>').text(file.name).appendTo(document.body);
+                    that.onImageChange(file.name, file.width, file.height);
+
                 });
             }
         });
+};
+
+imageCropper.prototype.onImageChange = function(imageSrc, imageWidth, imageHeight){
+
+    if(this.slideCropper_){
+        this.slideCropper_.destroy();
+    }
+    
+    var slideCropperDom = $('<div>');
+    $(this.refDomElement_).after(slideCropperDom);
+    
+    var opt = {
+        minSize: this.minSize_,
+        maxSize: this.maxSize_,
+        source: imageSrc,
+        originWidth: imageWidth, 
+        originHeight: imageHeight,
+        selectionCallback: $.proxy(this.onSelection, this)
+    }
+    //to get the instance, using 'data' method
+    this.slideCropper_ = $(slideCropperDom).slideCropper(opt).data('custom-slideCropper');
+    
+    
+    // this.slideCropper_ = $(slideCropperDom).data('custom-slideCropper');
+};
+
+imageCropper.prototype.onSelection = function(selectionValue, rate, source){
+    // console.log('s: '+ selectionValue);
+    // console.log('r: ' + rate);
+    
+    $.post(this.postUrl, { data : JSON.stringify({axis : selectionValue, rate: rate, source: source})}, $.proxy(this.afterResize, this));
+};
+
+imageCropper.prototype.afterResize = function(file){
+    //data is a json object.
+    this.onImageChange(file.name, file.width, file.height);
 };
 
 
@@ -402,8 +616,10 @@ $(function(){
     if($('#news-edit-page').length){
         
         //Init image cropper
-        new imageCropper($('#image'), $('#image').parent().eq(0));
-        new imageCropper($('#thumbnail'), $('#thumbnail').parent().eq(0));
+        
+        //var imageCropper = function(inputField, refDomElement, minSize, maxSize, postUrl){
+        new imageCropper($('#image'), $('#image').parent().eq(0), [640, 400], [640, 1000]);
+        new imageCropper($('#thumbnail'), $('#thumbnail').parent().eq(0), [130, 130], [130, 130]);
         
         //end for image cropper
         

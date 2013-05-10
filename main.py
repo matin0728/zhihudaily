@@ -22,7 +22,7 @@ class ImageUploadHandler(base_handler.BaseHandler):
   def post(self):
     #image_file = self.request.get('files')
     self.response.headers.add_header("Content-Type", "application/json")
-    self.response.out.write(json.dumps({'files':[{'name':'http://p3.zhimg.com/b1/a0/b1a09e0425d8f0977a125d2fc3c2f9e5_m.jpg'}]}))
+    self.response.out.write(json.dumps({'files':[{'name':'http://p3.zhimg.com/b1/a0/b1a09e0425d8f0977a125d2fc3c2f9e5_m.jpg', 'width': 233, 'height': 497}]}))
     
 
 class MainHandler(base_handler.BaseHandler):
