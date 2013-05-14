@@ -18,6 +18,13 @@ import webapp2
 import base_handler
 import json
 
+class StartupImageHandler(base_handler.BaseHandler):
+  def get(self):
+    context = {
+    
+    }
+    self.render('startup_image.html', context)
+
 class ImageUploadHandler(base_handler.BaseHandler):
   def post(self):
     #image_file = self.request.get('files')
@@ -159,5 +166,6 @@ app = webapp2.WSGIApplication([
   webapp2.Route(r'/news/create', handler=NewsCreateHandler, name='news.edit'),
   webapp2.Route(r'/news/topstory', handler=TopStoryHandler, name='news.topstory'),
   webapp2.Route(r'/image_upload', handler=ImageUploadHandler, name='imageupload'),
+  webapp2.Route(r'/startup_image', handler=StartupImageHandler, name='startupimage'),
   
 ], debug=True)
