@@ -368,7 +368,7 @@ NewsQuestionGroup.prototype.appendTo = function(container){
 var questionPlaceHolder, questionDragTarget;
 
 NewsQuestionGroup.prototype.createDom = function(){
-    this.element_ = $('<div class="question '+ this.jsonData_.visibility+'" draggable="true" data-ddgroup="question" data-questionid="' + this.jsonData_.question_id + '"><h3><a class="remove remove-question" data-action="remove-question" href="javascript:;">Remove</a><a class="edit" href="/question/'+this.jsonData_.question_id+'/edit">Edit</a><a class="edit" data-action="visibility">Visibility</a>'+ this.jsonData_.question_title +'</h3></div>');
+    this.element_ = $('<div class="question '+ this.jsonData_.visibility+'" draggable="true" data-ddgroup="question" data-questionid="' + this.jsonData_.question_id + '"><h3><a class="remove remove-question" data-action="delete-question" href="javascript:;">Delete</a><a class="edit" href="/question/'+this.jsonData_.question_id+'/edit">Edit</a><a class="edit" data-action="visibility">Visibility</a>'+ this.jsonData_.question_title +'</h3></div>');
     this.answersWrap_ = $('<ul></ul>').appendTo(this.element_);
     this.jsonData_.answers.forEach(function(answerDataJson){
         this.createAnswerEntry_(answerDataJson);
@@ -377,7 +377,7 @@ NewsQuestionGroup.prototype.createDom = function(){
     $(this.element_).on('click', $.proxy(function(e){
         var action = $(e.target).attr('data-action');
 
-        if(action == 'remove-answer' || action == 'answer-visibility'){
+        if(action == 'delete-answer' || action == 'answer-visibility'){
             var $answerDom = $(e.target).parents('li');
             var questionDom = $($answerDom).parents('.question');
 
@@ -387,7 +387,7 @@ NewsQuestionGroup.prototype.createDom = function(){
             e.stopPropagation();
         }
 
-        if(action == 'remove-answer'){
+        if(action == 'delete-answer'){
             if(confirm('确定删除答案吗？')){
 
                 //console.log('Remove answer.');
@@ -402,7 +402,7 @@ NewsQuestionGroup.prototype.createDom = function(){
                 this.jsonData_.answers = answerArray;
                 $answerDom.remove();
 
-                $.post('/news/delete_answer', {'question_id':question_id, 'answer_id':answer_id});
+                $.post('/answer/'+ answer_id + '/delete');
 
             }
         }else if(action == 'answer-visibility'){
@@ -485,7 +485,7 @@ NewsQuestionGroup.prototype.addAnswerEntry = function(answerDataJson){
 
 NewsQuestionGroup.prototype.createAnswerEntry_ = function(answerDataJson){
     // var placeholder = this.placeholder;
-    $(['<li class="'+ answerDataJson.visibility+'" draggable="true" data-ddgroup="', this.jsonData_.question_id ,'" data-answerid="', answerDataJson.answer_id, '"><a class="remove remove-answer" data-action="remove-answer" href="javascript:;">Remove</a><a class="edit" href="/answer/'+answerDataJson.answer_id+'/edit">Edit</a><a class="edit" data-action="answer-visibility" href="javascript:;">Visibility</a>', answerDataJson.author, '，',  answerDataJson.summary, '</li>'].join(''))
+    $(['<li class="'+ answerDataJson.visibility+'" draggable="true" data-ddgroup="', this.jsonData_.question_id ,'" data-answerid="', answerDataJson.answer_id, '"><a class="remove remove-answer" data-action="delete-answer" href="javascript:;">Delete</a><a class="edit" href="/answer/'+answerDataJson.answer_id+'/edit">Edit</a><a class="edit" data-action="answer-visibility" href="javascript:;">Visibility</a>', answerDataJson.author, '，',  answerDataJson.summary, '</li>'].join(''))
         .appendTo(this.answersWrap_).on('dragstart', $.proxy(function(e){
             e.target.style.opacity = '0.4';
             if(!this.placeholder){
@@ -611,13 +611,16 @@ $(function(){
 
 
             if(action == 'remove'){
-                // $(item).remove();
+                if(confirm('确定撤销置顶？')){
+                    $(item).remove();
+                    $.post('/news/top/'+id_+'/remove');
+                }
+
+            }
+            else if(action == 'delete'){
                 if(confirm('确定删除新闻吗？')){
                     $(item).remove();
                     $.post('/news/'+id_+'/delete');
-                    // $.post('/news/'+id_+'/remove', function(){
-                    //       $(item).remove();
-                    //   });
                 }
 
             }else if(action == 'visibility'){
@@ -684,16 +687,16 @@ $(function(){
         $('#qeustion-list').on('click', function(e){
             var action = $(e.target).attr('data-action');
 
-            if(action == 'remove-question' || action == 'visibility'){
+            if(action == 'delete-question' || action == 'visibility'){
                 var question_id = $(e.target).parents('.question').attr('data-questionid');
 
             }
 
-            if(action == 'remove-question'){
+            if(action == 'delete-question'){
                 //console.log('Remove question.');
                 if(confirm('删除问题吗？')){
                     questionList.removeQuestion(question_id);
-                    $.post('/news/' +newsId+'/question/'+ question_id + '/delete');
+                    $.post('/question/'+ question_id + '/delete');
                 }
 
             }else if(action == 'visibility'){
